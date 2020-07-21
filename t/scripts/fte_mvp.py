@@ -24,7 +24,4 @@ def fte_mvp(df):
     t = pd.concat([home, away], ignore_index=True)
     t = t.groupby('team').sum()
     t['goal_difference'] = t['scored'] - t['conceded']
-    t['xg_difference'] = t['xg_scored'] - t['xg_conceded']
-    t['nsxg_difference'] = t['nsxg_scored'] - t['nsxg_conceded']
-    t['adj_goal_difference'] = t['adj_goals_scored'] - t['adj_goals_conceded']
     return t
