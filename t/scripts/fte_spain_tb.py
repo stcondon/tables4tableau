@@ -15,7 +15,7 @@ def fte_spain_tb(df):
                     mini = mini.sort_values(by=['points', 'goal_difference', 'goal_difference_total'], ascending = False)
                 else:
                     mini = mini.sort_values(by=['points', 'goal_difference'], ascending = False)
-                mini['tb'] = 2 * mini.shape[0] - mini.reset_index().index
+                mini['tb'] = [2 * mini.shape[0]] * len(mini.index) - mini.reset_index().index
                 t.update(mini['tb'])
         t = t.sort_values(by=['points', 'tb', 'goal_difference', 'scored'], ascending = False)
         t.drop('tb', axis = 1, inplace=True)
