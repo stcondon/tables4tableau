@@ -1,5 +1,6 @@
 def fte_mvp(df):
     df.dropna(subset = ['score1'], inplace = True)
+    season = '-'.join([df.iloc[0]['date'][0:4],df.iloc[-1]['date'][0:4]])
     home = df.groupby('team1').apply(
         lambda x: (x['score1'] > x['score2']).sum() * 3 + (x['score1'] == x['score2']).sum()).reset_index(name='points')
     pt = pd.pivot_table(df, values = ['score1', 'score2', 'xg1', 'xg2', 'nsxg1', 'nsxg2', 'adj_score1','adj_score2'],
@@ -25,4 +26,5 @@ def fte_mvp(df):
     t = pd.concat([home, away], ignore_index=True)
     t = t.groupby('team').sum()
     t['goal_difference'] = t['scored'] - t['conceded']
+    t['season'] = season
     return t
