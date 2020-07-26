@@ -1,4 +1,5 @@
 def fte_mvp(df):
+    df.dropna(subset = ['score1'], inplace = True)
     home = df.groupby('team1').apply(
         lambda x: (x['score1'] > x['score2']).sum() * 3 + (x['score1'] == x['score2']).sum()).reset_index(name='points')
     pt = pd.pivot_table(df, values = ['score1', 'score2', 'xg1', 'xg2', 'nsxg1', 'nsxg2', 'adj_score1','adj_score2'],
