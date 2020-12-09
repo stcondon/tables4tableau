@@ -1,0 +1,4 @@
+WITH teams AS (
+  
+)
+;
