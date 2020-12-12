@@ -4,7 +4,8 @@ CREATE TABLE home(
   played INTEGER,
   points INTEGER,
   scored INTEGER,
-  conceded INTEGER
+  conceded INTEGER,
+  tie_breaker INTEGER
 );
 
 CREATE TABLE away(
@@ -13,5 +14,6 @@ CREATE TABLE away(
   played INTEGER,
   points INTEGER,
   scored INTEGER,
-  conceded INTEGER
+  conceded INTEGER,
+  tie_breaker INTEGER
 );
