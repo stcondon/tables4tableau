@@ -1,3 +1,4 @@
+DROP MATERIALIZED VIEW england_league_table;
 CREATE MATERIALIZED VIEW england_league_table AS (
   SELECT
   	team,
