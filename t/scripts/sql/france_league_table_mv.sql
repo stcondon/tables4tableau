@@ -1,14 +1,14 @@
 CREATE MATERIALIZED VIEW france_league_table AS (
   SELECT
   	team,
-  	home.played + away.played AS played,
-  	home.points + away.points AS points,
-  	home.scored + away.scored AS scored,
-  	home.conceded + away.conceded AS conceded
+    COALESCE(h.played, 0) + COALESCE(a.played, 0) AS played,
+  	COALESCE(h.points, 0) + COALESCE(a.points, 0) AS points,
+  	COALESCE(h.scored, 0) + COALESCE(a.scored, 0) AS scored,
+  	COALESCE(h.conceded, 0) + COALESCE(a.conceded, 0) AS conceded
   FROM home
   LEFT JOIN away USING (team)
   ORDER BY
-  	home.points + away.points DESC,
-  	home.scored + away.scored - home.conceded + away.conceded DESC,
-  	home.scored + away.scored DESC
+  	COALESCE(home.points,0) + COALESCE(away.points,0) DESC,
+  	COALESCE(home.scored,0) + COALESCE(away.scored,0) - COALESCE(home.conceded,0) + COALESCE(away.conceded,0) DESC,
+  	COALESCE(home.scored,0) + COALESCE(away.scored,0) DESC
 );
