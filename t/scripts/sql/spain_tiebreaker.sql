@@ -87,10 +87,29 @@ BEGIN
     GROUP BY
       1
     ;
+    WITH tb AS (
+      SELECT
+        team,
+        COALESCE(h.played, 0) + COALESCE(a.played, 0) AS played,
+        COALESCE(h.points, 0) + COALESCE(a.points, 0) AS points,
+        COALESCE(h.scored,0) + COALESCE(a.scored,0) - COALESCE(h.conceded,0) + COALESCE(a.conceded,0) AS difference,
+        RANK() OVER (
+          ORDER BY
+          COALESCE(h.points, 0) + COALESCE(a.points, 0) DESC,
+          COALESCE(h.scored,0) + COALESCE(a.scored,0) - COALESCE(h.conceded,0) + COALESCE(a.conceded,0) DESC
+        ) AS place
+      FROM spain_mini_home h
+      LEFT JOIN spain_mini_away a USING (team)
+      GROUP BY
+        1,2,3,4
+      ORDER BY
+        COALESCE(h.points, 0) + COALESCE(a.points, 0) DESC,
+        COALESCE(h.scored,0) + COALESCE(a.scored,0) - COALESCE(h.conceded,0) + COALESCE(a.conceded,0) DESC
+    )
     UPDATE spain_home sh
-      SET tie_breaker = 1
-    FROM spain_mini_home smh
-    WHERE sh.team = smh.team
+      SET tie_breaker = tb.place
+    FROM tb
+    WHERE sh.team = tb.team
     ;
     TRUNCATE spain_mini_home;
   END LOOP;
