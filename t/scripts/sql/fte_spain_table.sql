@@ -38,10 +38,6 @@ GROUP BY
   1
 ;
 
--- TRUNCATE TABLE spain_home;
+TRUNCATE TABLE spain_home;
 
--- TRUNCATE TABLE spain_away;
---
--- TRUNCATE TABLE spain_mini_home;
---
--- TRUNCATE TABLE spain_mini_away;
+TRUNCATE TABLE spain_away;
