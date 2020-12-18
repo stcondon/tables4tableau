@@ -41,3 +41,7 @@ GROUP BY
 TRUNCATE TABLE spain_home;
 
 TRUNCATE TABLE spain_away;
+
+DROP TABLE xpert.spain;
+
+DROP TABLE fte.spi_matches;
