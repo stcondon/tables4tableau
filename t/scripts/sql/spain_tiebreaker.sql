@@ -6,11 +6,19 @@ DECLARE
   p RECORD;
 
 BEGIN
-  REFRESH MATERIALIZED VIEW spain_league_table; -- TO BE REPLACED WITH BETTER QUERY IN FOR LOOP
+  -- REFRESH MATERIALIZED VIEW spain_league_table; -- TO BE REPLACED WITH BETTER QUERY IN FOR LOOP
   FOR p IN (
+    WITH point_count AS (
+    	SELECT
+    		team,
+    		COALESCE(h.played, 0) + COALESCE(a.played, 0) AS played,
+    		COALESCE(h.points, 0) + COALESCE(a.points, 0) AS points
+    	FROM spain_home h
+    	LEFT JOIN spain_away a USING (team)
+    )
     SELECT
     	points
-    FROM spain_league_table
+    FROM point_count
     GROUP BY 1
     HAVING COUNT (DISTINCT team) > 1
   )
