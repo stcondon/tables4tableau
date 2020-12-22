@@ -98,7 +98,7 @@ BEGIN
     SELECT COUNT (DISTINCT team) INTO team_count FROM mini_teams;
     WITH mini_games AS (
       SELECT played FROM spain_mini_away
-      UNION
+      UNION ALL
       SELECT played FROM spain_mini_home
     )
     SELECT SUM(played) INTO game_count FROM mini_games
