@@ -8,19 +8,13 @@ DECLARE
   team_count INTEGER;
 
 BEGIN
-  -- REFRESH MATERIALIZED VIEW spain_league_table; -- TO BE REPLACED WITH BETTER QUERY IN FOR LOOP
+  REFRESH MATERIALIZED VIEW spain_league_table;
   FOR p IN (
-    WITH point_count AS (
-    	SELECT
-    		team,
-    		COALESCE(h.points, 0) + COALESCE(a.points, 0) AS points
-    	FROM spain_home h
-    	LEFT JOIN spain_away a USING (team)
-    )
     SELECT
     	points
-    FROM point_count
-    GROUP BY 1
+    FROM spain_league_table
+    GROUP BY
+      points
     HAVING COUNT (DISTINCT team) > 1
   )
   LOOP
@@ -32,10 +26,8 @@ BEGIN
         score2
       FROM fte.spi_matches fte
       INNER JOIN xpert.spain xs ON TO_DATE(xs."Date",'DD/MM/YY') = DATE(fte."date")
-      INNER JOIN spain_names sn1 ON fte.team1 = sn1.fte
-      INNER JOIN spain_names sn2 ON fte.team1 = sn2.fte
-      -- INNER JOIN spain_league_table slt1 ON slt1.team = fte.team1
-      -- INNER JOIN spain_league_table slt2 ON slt2.team = fte.team2
+      INNER JOIN spain_league_table slt1 ON slt1.team = fte.team1
+      INNER JOIN spain_league_table slt2 ON slt2.team = fte.team2
       WHERE 1 = 1
         AND slt1.points = p.points
   			AND slt2.points = p.points
@@ -70,10 +62,8 @@ BEGIN
         score2
       FROM fte.spi_matches fte
       INNER JOIN xpert.spain xs ON TO_DATE(xs."Date",'DD/MM/YY') = DATE(fte."date")
-      INNER JOIN spain_names sn1 ON fte.team1 = sn1.fte
-      INNER JOIN spain_names sn2 ON fte.team1 = sn2.fte
-      -- INNER JOIN spain_league_table slt1 ON slt1.team = fte.team1
-      -- INNER JOIN spain_league_table slt2 ON slt2.team = fte.team2
+      INNER JOIN spain_league_table slt1 ON slt1.team = fte.team1
+      INNER JOIN spain_league_table slt2 ON slt2.team = fte.team2
       WHERE 1 = 1
         AND slt1.points = p.points
         AND slt2.points = p.points
