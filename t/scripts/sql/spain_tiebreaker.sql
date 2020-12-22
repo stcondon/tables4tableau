@@ -4,6 +4,8 @@ CREATE OR REPLACE FUNCTION spain_tiebreaker()
 AS $$
 DECLARE
   p RECORD;
+  game_count INTEGER;
+  team_count INTEGER;
 
 BEGIN
   -- REFRESH MATERIALIZED VIEW spain_league_table; -- TO BE REPLACED WITH BETTER QUERY IN FOR LOOP
